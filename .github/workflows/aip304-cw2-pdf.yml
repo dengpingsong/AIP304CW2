@@ -1,0 +1,86 @@
+name: AIP304 CW2 PDF
+
+on:
+  push:
+    paths:
+      - 'report/**'
+      - 'scripts/build_aip304_report.py'
+      - '.github/workflows/aip304-cw2-pdf.yml'
+  pull_request:
+    paths:
+      - 'report/**'
+      - 'scripts/build_aip304_report.py'
+      - '.github/workflows/aip304-cw2-pdf.yml'
+  workflow_dispatch:
+    inputs:
+      language:
+        description: 'PDF language / PDF 语言'
+        type: choice
+        required: true
+        default: all
+        options: [all, en, zh]
+      mode:
+        description: 'preview allows placeholders; submission rejects them'
+        type: choice
+        required: true
+        default: preview
+        options: [preview, submission]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aip304-cw2-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pdf:
+    name: Build and validate AIP304 report
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      REPORT_LANGUAGE: ${{ inputs.language || 'all' }}
+      REPORT_MODE: ${{ inputs.mode || 'preview' }}
+      PYTHONUNBUFFERED: '1'
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install XeLaTeX, Chinese fonts and PDF tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            latexmk texlive-xetex texlive-lang-chinese \
+            texlive-latex-extra texlive-fonts-recommended \
+            fonts-lmodern fonts-noto-cjk fontconfig poppler-utils python3
+
+      - name: Build and check the selected PDFs
+        run: |
+          set -euo pipefail
+          python3 scripts/build_aip304_report.py \
+            --language "$REPORT_LANGUAGE" \
+            --mode "$REPORT_MODE"
+
+      - name: Upload checked PDFs and build manifest
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aip304-cw2-${{ env.REPORT_LANGUAGE }}-${{ env.REPORT_MODE }}-${{ github.run_number }}
+          path: |
+            dist/aip304-cw2/*.pdf
+            dist/aip304-cw2/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload diagnostics when a check fails
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: aip304-cw2-diagnostics-${{ github.run_number }}-${{ github.run_attempt }}
+          path: build/aip304-cw2/**/*.log
+          if-no-files-found: warn
+          retention-days: 7

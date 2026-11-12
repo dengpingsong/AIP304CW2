@@ -1,0 +1,92 @@
+% Build with scripts/build_aip304_report.py, which provides metadata.tex.
+% A4 / 11pt / 20 mm are readable template defaults, not mandated CW2 values.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=20mm,headheight=15pt,headsep=6mm,footskip=9mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setmainfont{Latin Modern Roman}
+\setsansfont{Latin Modern Sans}
+\setmonofont{Latin Modern Mono}
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans CJK SC}
+\tracinglostchars=3
+\usepackage{amsmath,amssymb,graphicx,booktabs,tabularx}
+\usepackage{enumitem,caption,fancyhdr,titlesec,xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\newif\ifReportChinese
+\newif\ifReportSubmission
+\input{metadata.tex}
+
+\ifReportChinese
+  \renewcommand{\figurename}{图}
+  \renewcommand{\tablename}{表}
+  \renewcommand{\refname}{参考文献}
+  \newcommand{\AIHeading}{AI 使用声明}
+  \newcommand{\ContributionHeading}{成员贡献}
+  \newcommand{\PreviewLabel}{模板预览 - 请勿直接提交}
+\else
+  \newcommand{\AIHeading}{AI-use disclosure}
+  \newcommand{\ContributionHeading}{Contributions}
+  \newcommand{\PreviewLabel}{TEMPLATE PREVIEW - NOT FOR SUBMISSION}
+\fi
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlist{nosep,leftmargin=*}
+\titleformat{\section}{\large\bfseries}{\thesection}{0.5em}{}
+\titlespacing*{\section}{0pt}{9pt plus 2pt}{4pt}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titlespacing*{\subsection}{0pt}{6pt plus 1pt}{3pt}
+\captionsetup{font=small,labelfont=bf,skip=5pt}
+\setlength{\textfloatsep}{9pt plus 2pt}
+\setlength{\intextsep}{8pt plus 2pt}
+\setlength{\bibsep}{2pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small AIP304 Coursework 2}
+\fancyhead[R]{\small Option \ReportOption}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\todo}[1]{%
+  \ifReportSubmission
+    \PackageError{aip304-cw2}{Unfilled TODO in submission}{Replace every todo with your own verified work.}%
+  \else
+    \typeout{CW2-TODO: #1}%
+    {\color{brown}\textbf{[TODO: #1]}}%
+  \fi
+}
+% Keep generated figures here. Do not commit private datasets/checkpoints.
+\graphicspath{{generated/}{figures/}}
+\hypersetup{pdftitle={\ReportTitle},pdfsubject={AIP304 Coursework 2}}
+
+\begin{document}
+% Compact title block shares page 1 with the report. No cover or contents page.
+{\LARGE\bfseries\ReportTitle\par}
+\vspace{2pt}
+{\normalsize AIP304 Machine Learning - Coursework 2 \quad | \quad Option \ReportOption\par}
+{\normalsize\ReportAuthors\par}
+\ifReportSubmission\else
+  {\small\color{brown}\textbf{\PreviewLabel}\par}
+\fi
+\vspace{3pt}
+
+\ifReportChinese
+  \input{content/zh.tex}
+\else
+  \input{content/en.tex}
+\fi
+
+% References and disclosures are part of the same <= 5-page PDF.
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+\section*{\AIHeading}
+\ReportAIDisclosure
+\section*{\ContributionHeading}
+\ReportContributions
+\end{document}

@@ -1,0 +1,166 @@
+% Authoring template, not a completed coursework report.
+% Replace every \todo{...} with your own verified work; remove instructional prose.
+% Keep the complete report, references and disclosures within five pages.
+% The main document supplies the title, member details, bibliography and disclosures.
+
+\section{Problem and motivation}
+\todo{State the plant disease recognition problem, its practical motivation, and the
+scope of the nine-host coursework subset. Identify the selected option and explain
+what a successful result would establish. Avoid claims unsupported by your results.}
+
+\ifnum\ReportOption=2
+\todo{State a falsifiable hypothesis before training: explain how binary lesion
+supervision could improve rejection of unfamiliar host--disease combinations while
+preserving known-class recognition. Define and justify an acceptable reduction in
+known-class macro-F1, and specify what evidence would support, contradict, or leave
+the hypothesis unresolved.}
+\else
+\todo{Define the closed-set prediction task: a single RGB image is mapped to a
+host--disease class. Explain why visually similar symptoms, small lesions, background
+variation and imbalance make this task challenging.}
+\fi
+
+\section{Related work}
+The required dataset release is PlantSeg v7 \citep{wei2025plantsegv7}; the associated
+data descriptor provides the dataset context \citep{wei2026plantseg}.
+\todo{Add the relevant methods you actually read to references.bib. Explain how their
+data, supervision, inference inputs and evaluation protocols relate to this study.
+Check every bibliographic record and cite sources for substantive borrowed ideas.}
+
+\ifnum\ReportOption=2
+\todo{Discuss at least three closely related methods, including unknown plant-disease
+recognition and lesion-guided or grounded recognition. Record the date and scope of
+the current literature search. Distinguish rejecting unknown classes from naming
+unseen classes or abstaining on healthy images. Explain whether this study is a
+replication, extension or new comparison; substantiate any novelty claim.}
+\fi
+
+\section{Data and protocol}
+\todo{Use only PlantSeg v7 (25 November 2025), retaining apple, banana, citrus, corn,
+potato, soybean, tomato, wheat and zucchini. Derive actual class identifiers and
+counts from the downloaded metadata. Treat each host--disease pair as one class;
+preserve labels and the supplied approximately 70/10/20 train/validation/test split.}
+
+\todo{Reference the frozen manifest and report per-partition class counts, unreadable
+files, duplicate checks and documented exclusions. Explain how identical images and
+possible near-duplicate leakage were handled. Fit dataset-specific preprocessing on
+training data only; keep augmentations with their source training images. State the
+fixed class order, treatment of undefined metrics, and handling of unsupported classes.}
+
+\ifnum\ReportOption=2
+\todo{Document both frozen class-role mappings. Citrus classes are development
+unknowns and potato classes are test unknowns. For each other host, Assignment A
+reserves the first/second alphabetically ordered disease labels as development/test
+unknowns; Assignment B reserves the second/third. Train on known classes only and
+discard unused reserved-class images. Report familiar-host unknowns separately from
+the unfamiliar-host control, including shared versus unseen disease labels where
+sample sizes permit.}
+\fi
+
+\section{Method}
+\todo{Describe the architecture, initialisation or exact pretrained-weight identifier,
+RGB preprocessing, augmentation, loss, optimiser, learning rate, training budget and
+stopping rule. Justify resizing/cropping. Record seeds, dependency versions, hardware,
+training time and checkpoint selection. Use deterministic validation/test transforms,
+evaluation mode and disabled gradients. Do not use PlantSeg-trained or overlapping
+PlantWild-trained checkpoints, class-bearing filenames, or metadata as predictive inputs.}
+
+\ifnum\ReportOption=2
+\todo{Explain the lesion-supervision mechanism and why it might succeed or fail.
+Use binary masks from known training classes only; all evaluated predictions must
+use RGB only. Define a matched classifier without lesion supervision and control
+backbone, initialisation, preprocessing, augmentation and training/search budgets.
+Remove each claimed additional component in an ablation.}
+\else
+\todo{Describe a majority-class predictor and a basic CNN. Define at least two
+controlled improvements, changing one factor at a time where possible. State how
+validation macro-F1 selects the final configuration and how all choices are frozen
+before final testing.}
+\fi
+
+\section{Experiments and results}
+\todo{Replace all dashes in Table~\ref{tab:results} with verified notebook-generated
+results, with sample sizes and uncertainty where required. A dash is a placeholder,
+not zero or an omitted experiment. Report macro-F1 (宏平均 F1) consistently.}
+
+\begin{table}[htbp]
+\centering
+\small
+\ifnum\ReportOption=2
+\caption{Results template for one class assignment. All entries are placeholders;
+no experiments or measured results are represented.}
+\label{tab:results}
+\begin{tabularx}{\linewidth}{@{}lXXX@{}}
+\toprule
+Model & Familiar-host AUOSCR & Known-class macro-F1 & Unknown AUROC \\
+\midrule
+Matched baseline & -- & -- & -- \\
+Lesion supervision & -- & -- & -- \\
+Component ablation & -- & -- & -- \\
+\bottomrule
+\end{tabularx}
+\else
+\caption{Test-results template. All entries are placeholders; no experiments or
+measured results are represented.}
+\label{tab:results}
+\begin{tabularx}{\linewidth}{@{}lXXX@{}}
+\toprule
+System & Macro-F1 & Top-1 accuracy & Balanced accuracy \\
+\midrule
+Majority predictor & -- & -- & -- \\
+Basic CNN & -- & -- & -- \\
+Controlled change 1 & -- & -- & -- \\
+Controlled change 2 & -- & -- & -- \\
+\bottomrule
+\end{tabularx}
+\fi
+\end{table}
+
+\ifnum\ReportOption=2
+\todo{Run three training seeds for each of two class assignments: six runs per model
+configuration, with independent training for each assignment. Report seed means,
+standard deviations and paired differences separately for each assignment. Compare
+maximum-softmax, maximum-logit and energy scores; choose the primary rule on baseline
+validation data and apply the same rule to both models. Report familiar-host AUOSCR,
+known-class macro-F1/accuracy, unknown AUROC and separate unfamiliar-host results.}
+\todo{Select checkpoints by known-class validation macro-F1 and configurations by
+familiar-host validation AUOSCR subject to the predefined tolerance. Freeze both
+assignments' choices before either test evaluation. Set the operating threshold using
+known validation images only at approximately 95\% acceptance; report test known
+acceptance, correct-and-accepted rate and unknown false acceptance.}
+\else
+\todo{Report final test metrics for the baseline and improved systems, per-class
+precision/recall/F1/support, and a confusion matrix. Retain the complete matrix in the
+notebook if the report shows a readable subset. Explain the effects of the controlled
+changes using the actual evidence.}
+\fi
+
+\begin{figure}[htbp]
+\centering
+\fbox{\parbox[c][23mm][c]{0.9\linewidth}{\centering
+Figure placeholder / 图示占位\\
+No data and no measured results are shown.\\
+Replace with an informative notebook-generated visual.}}
+\caption{Visual-evidence placeholder, not a measured result. Replace both this box
+and its caption with a numbered, labelled figure generated by the submitted notebook.}
+\label{fig:diagnostic}
+\end{figure}
+
+\todo{Replace Figure~\ref{fig:diagnostic} with a useful result: for example, a confusion
+heatmap, checkpoint-marked learning curves, labelled prediction failures, or Option 2
+OSCR curves. Give axis/colour labels, clear class labels and relevant sample counts.
+The submitted notebook must regenerate every data-derived figure and results table.}
+
+\section{Interpretation and limitations}
+\todo{Explain representative successes and failures, class imbalance, possible leakage,
+data/domain limits and computational constraints. Separate observed results from
+speculation and avoid broad claims unsupported by the evaluated groups. Summarise
+what the evidence establishes and one justified next investigation.}
+\ifnum\ReportOption=2
+\todo{Evaluate the pre-stated hypothesis against paired AUOSCR and known-class
+macro-F1 differences, variation across seeds/assignments and unknown groups. Mixed or
+negative evidence is valid. A potato-only unfamiliar-host control does not justify
+claims about general performance on unfamiliar plant hosts.}
+\fi
+
+% References and AI/team disclosures are rendered centrally by the main template.

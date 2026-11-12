@@ -1,0 +1,18 @@
+{
+  "option": 1,
+  "title": {
+    "en": "Plant disease recognition in the wild",
+    "zh": "真实场景下的植物病害识别"
+  },
+  "authors": [
+    {"name": "TODO: Your name / 姓名", "id": "TODO: Student ID / 学号"}
+  ],
+  "ai_disclosure": {
+    "en": "ChatGPT assisted with the GitHub Actions workflow and the LaTeX report template. TODO: Record the model/version where available, all further AI assistance (code, writing, literature search, analysis and visualisation), and how you checked the outputs.",
+    "zh": "ChatGPT 协助搭建 GitHub Actions 工作流及 LaTeX 报告模板。TODO：补充可得的模型版本、其他 AI 使用情况（代码、写作、文献检索、分析及可视化），并说明如何核验输出。"
+  },
+  "contributions": {
+    "en": "TODO: Identify each member's work on implementation, experiments, analysis, writing and demonstration. For individual work, state that these tasks were completed individually.",
+    "zh": "TODO：说明每名成员在实现、实验、分析、写作及演示方面的贡献；个人完成时，明确说明各项工作由本人完成。"
+  }
+}
